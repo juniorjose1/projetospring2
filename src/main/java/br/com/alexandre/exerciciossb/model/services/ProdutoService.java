@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import br.com.alexandre.exerciciossb.model.domain.Produto;
 import br.com.alexandre.exerciciossb.model.repositories.ProdutoRepository;
+import br.com.alexandre.exerciciossb.model.services.exception.ObjectNotFoundException;
 
 @Service
 public class ProdutoService {
@@ -18,7 +19,8 @@ public class ProdutoService {
 	
 	public Produto listarProdutoPorId(Integer id) {
 		Optional<Produto> produtoEncontrado = repository.findById(id);
-		return produtoEncontrado.orElse(null);
+		return produtoEncontrado.orElseThrow(() -> new ObjectNotFoundException
+			("Produto Não Encontrado ! ID: " + id + ", Tipo: " + Produto.class.getName()));
 	}
 	
 	public void salvarProduto(Produto produto) {
